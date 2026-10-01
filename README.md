@@ -1,7 +1,7 @@
 # SAGHIRI-Team-SE-2026
 
 <div align="center">
-#  Saghiri
+  Saghiri
 </div>
 
 ###  Team Members
