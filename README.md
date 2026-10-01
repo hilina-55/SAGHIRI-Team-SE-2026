@@ -1,8 +1,7 @@
 # SAGHIRI-Team-SE-2026
 
-<div align="center">
-  Saghiri
-</div>
+###  Name of Project :SAGHIRI 
+
 
 ###  Team Members
 - **Roudaina Boudehane** 
