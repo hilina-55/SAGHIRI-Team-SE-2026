@@ -6,7 +6,6 @@
 ###  Team Members
 - **Roudaina Boudehane** 
 - **Abla Takouk** 
-- **Salsabil Azil** 
 - **Amina Khoudas** 
 - **Douaa Bouchareb** 
 - **Hadjer Boulenouar**
