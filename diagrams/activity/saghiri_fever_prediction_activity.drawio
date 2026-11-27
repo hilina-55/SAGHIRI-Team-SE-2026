@@ -1,0 +1,122 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT">
+  <diagram id="saghiri-fever-activity" name="Fever Prediction Activity">
+    <mxGraphModel dx="3648" dy="2576" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1450" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane_flutter" parent="1" style="swimlane;horizontal=1;startSize=48;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8fafc;swimlaneFillColor=#ffffff;strokeColor=#94a3b8;strokeWidth=1.4;fontStyle=1;fontSize=16;collapsible=0;" value="Flutter App" vertex="1">
+          <mxGeometry height="1380" width="700" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="lane_flutter" style="ellipse;aspect=fixed;html=1;fillColor=#111827;strokeColor=#111827;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="22" width="22" x="339" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="initial_wait" parent="lane_flutter" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Wait until the initial 10-minute&lt;br&gt;data window is available&lt;br&gt;(120 readings)" vertex="1">
+          <mxGeometry height="85" width="250" x="225" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="lane_flutter" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="initial_wait" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="875" y="125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fetch" parent="lane_flutter" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Fetch the latest 120 readings&lt;br&gt;from /babies/{baby_id}/temperatures&lt;br&gt;orderByChild(timestamp), limitToLast(120)" vertex="1">
+          <mxGeometry height="105" width="290" x="205" y="333" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="lane_flutter" source="initial_wait" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;" target="fetch" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="decision" parent="lane_flutter" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#c9a227;strokeWidth=1.5;fontSize=13;spacing=5;" value="fever_risk == true?" vertex="1">
+          <mxGeometry height="90" width="105" x="297.5" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="no_alert" parent="lane_flutter" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Do not send a notification" vertex="1">
+          <mxGeometry height="65" width="230" x="440" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="f_false" edge="1" parent="lane_flutter" source="decision" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;fontStyle=1;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;" target="no_alert" value="[No]">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" parent="lane_flutter" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#4d8b57;strokeWidth=1.5;fontSize=13;spacing=7;" value="Trigger a push notification:&lt;br&gt;“Fever risk detected in 10 minutes”" vertex="1">
+          <mxGeometry height="75" width="235" x="20" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="f_true" edge="1" parent="lane_flutter" source="decision" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;fontStyle=1;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="notify" value="[Yes]">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wait_cycle" parent="lane_flutter" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Wait 2 minutes&lt;br&gt;before the next prediction request" vertex="1">
+          <mxGeometry height="75" width="290" x="205" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="f_wait_repeat" edge="1" parent="lane_flutter" source="wait_cycle" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="fetch" value="Repeat prediction cycle">
+          <mxGeometry relative="1" x="-0.1241" as="geometry">
+            <Array as="points">
+              <mxPoint x="-20" y="1277.5" />
+              <mxPoint x="-20" y="385.5" />
+            </Array>
+            <mxPoint x="170" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f_noalert_merge" edge="1" parent="lane_flutter" source="no_alert" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="drzaN_RSuCPpN3OfpHly-4" value="">
+          <mxGeometry relative="1" x="-0.0857" as="geometry">
+            <Array as="points">
+              <mxPoint x="555" y="1130" />
+              <mxPoint x="390" y="1130" />
+            </Array>
+            <mxPoint x="390" y="1170.25" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f_notify_merge" edge="1" parent="lane_flutter" source="notify" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="drzaN_RSuCPpN3OfpHly-4" value="">
+          <mxGeometry relative="1" x="-0.2704" as="geometry">
+            <Array as="points">
+              <mxPoint x="137.5" y="1130" />
+              <mxPoint x="310" y="1130" />
+            </Array>
+            <mxPoint x="310" y="1170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="drzaN_RSuCPpN3OfpHly-4" parent="lane_flutter" style="line;strokeWidth=2;html=1;" value="" vertex="1">
+          <mxGeometry height="10" width="160" x="270" y="1170" as="geometry" />
+        </mxCell>
+        <mxCell id="f_merge_wait" edge="1" parent="lane_flutter" source="drzaN_RSuCPpN3OfpHly-4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=0.775;exitDx=0;exitDy=0;exitPerimeter=0;" target="wait_cycle" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="1190" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lane_flask" parent="1" style="swimlane;horizontal=1;startSize=48;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8fafc;swimlaneFillColor=#ffffff;strokeColor=#94a3b8;strokeWidth=1.4;fontStyle=1;fontSize=16;collapsible=0;" value="Flask API (LSTM Model)" vertex="1">
+          <mxGeometry height="1380" width="350" x="740" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="api_receive" parent="lane_flask" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Receive POST /predict_fever&lt;br&gt;{baby_id, temperatures[120]}" vertex="1">
+          <mxGeometry height="75" width="260" x="45" y="348" as="geometry" />
+        </mxCell>
+        <mxCell id="inference" parent="lane_flask" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Scale temperature data&lt;br&gt;and run LSTM inference&lt;br&gt;(predict 10 minutes ahead)" vertex="1">
+          <mxGeometry height="90" width="260" x="45" y="487" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" edge="1" parent="lane_flask" source="api_receive" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;" target="inference" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="response" parent="lane_flask" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Return JSON response:&lt;br&gt;predicted_temp, fever_risk, message" vertex="1">
+          <mxGeometry height="80" width="260" x="45" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="threshold" parent="lane_flask" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eaf2f8;strokeColor=#54718f;strokeWidth=1.5;fontSize=13;spacing=7;" value="Compare predicted temperature&lt;br&gt;with the 38.0°C threshold&lt;br&gt;Set fever_risk = true / false" vertex="1">
+          <mxGeometry height="90" width="260" x="45" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" edge="1" parent="lane_flask" source="inference" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;" target="threshold" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f8" edge="1" parent="lane_flask" source="threshold" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;" target="response" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="polling_note" parent="1" style="shape=note;whiteSpace=wrap;html=1;size=16;fillColor=#fff8dc;strokeColor=#c9a227;fontSize=12;align=left;spacing=8;" value="Polling / timing rules&lt;br&gt;• New temperature reading every 5 seconds&lt;br&gt;• Initial prediction starts after 120 readings (10 minutes)&lt;br&gt;• After the first prediction, repeat every 2 minutes" vertex="1">
+          <mxGeometry height="115" width="310" x="40" y="-60" as="geometry" />
+        </mxCell>
+        <mxCell id="deployment_note" parent="1" style="shape=note;whiteSpace=wrap;html=1;size=16;fillColor=#fff8dc;strokeColor=#c9a227;fontSize=12;align=left;spacing=8;" value="Deployment notes&lt;br&gt;• Flask API hosted on Hugging Face Spaces&lt;br&gt;• CORS enabled for Flutter access&lt;br&gt;• Models use lazy loading to reduce cold-start timeout risk" vertex="1">
+          <mxGeometry height="115" width="300" x="760" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="f9" edge="1" parent="1" source="response" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="decision" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="drzaN_RSuCPpN3OfpHly-2" edge="1" parent="1" source="fetch" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;strokeWidth=1.6;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="api_receive" value="">
+          <mxGeometry height="50" relative="1" width="50" x="0.7838" as="geometry">
+            <mxPoint x="690" y="480" as="sourcePoint" />
+            <mxPoint x="780" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
